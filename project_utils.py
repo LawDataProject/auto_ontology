@@ -4,6 +4,9 @@
 import json,os,requests
 
 def get_json(entry):
+	
+	jfile = dict()
+	jfile['id'] = entry
 	key = os.getenv("GSEARCH_KEY")
 	cx = os.getenv("GSEARCH_CX")
 
@@ -11,16 +14,17 @@ def get_json(entry):
 	r = requests.get(url)
 	results_dict = r.json()
 	search_results = list()
-	for i in results_dict['items']:
-		if i['kind']=='customsearch#result':
-			snippet = i['snippet'].replace('\n','').replace('\xa0','')
-			if not (('FREE detailed reports' in snippet) or ('Compare divorce attorneys serving' in snippet)):
-				search_results.append(snippet)
+	try:
+		for i in results_dict['items']:
+			if i['kind']=='customsearch#result':
+				snippet = i['snippet'].replace('\n','').replace('\xa0','')
+				if not (('FREE detailed reports' in snippet) or ('Compare divorce attorneys serving' in snippet)):
+					search_results.append(snippet)
 	
-	text = " ".join(search_results)
-	jfile = dict()
-	jfile['id'] = entry
-	jfile['text'] = text
+		text = " ".join(search_results)
+		jfile['text'] = text
+	except:
+		jfile['text'] = ''
 
 	return jfile
 

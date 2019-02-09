@@ -3,7 +3,7 @@ from pprint import pprint
 
 
 sys.path.append(os.path.abspath('/opt/Programs/project'))
-from project_utils import project_utils as pu
+import project_utils as pu
 
 def main(entry):
 	jfile = pu.get_json(entry)
